@@ -9,7 +9,9 @@ import {
   Sun,
   Moon,
   BookOpen,
-  CheckCircle2
+  CheckCircle2,
+  Briefcase,
+  Calendar
 } from 'lucide-react';
 import { allModules } from '../data/modulesIndex.js';
 
@@ -32,6 +34,20 @@ export default function Sidebar({
       icon: LayoutDashboard,
       badge: `${completedIds.length}/${allModules.length}`,
       color: 'text-slate-600 dark:text-slate-300'
+    },
+    {
+      id: 'FORMASI',
+      label: 'Pilihan Lamaran (S1 IT)',
+      icon: Briefcase,
+      badge: 'Formasi',
+      color: 'text-cyan-600 dark:text-cyan-400'
+    },
+    {
+      id: 'JADWAL',
+      label: 'Jadwal & Target (Nov–Jan)',
+      icon: Calendar,
+      badge: 'Roadmap',
+      color: 'text-purple-600 dark:text-purple-400'
     },
     {
       id: 'TWK',
@@ -84,7 +100,7 @@ export default function Sidebar({
                 LMS DERA
               </h1>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
-                Modul SKD CPNS Terpadu
+                S1 Informatika • SKD CPNS
               </p>
             </div>
           </div>
@@ -101,7 +117,7 @@ export default function Sidebar({
         {/* Navigation Links */}
         <nav className="p-3 space-y-1.5">
           <div className="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-            Menu Utama & Materi
+            Menu Utama &amp; Materi
           </div>
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -144,27 +160,26 @@ export default function Sidebar({
       <div className="p-4 m-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60">
         <div className="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-200 mb-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-          <span>Target Passing Grade SKD</span>
+          <span>Passing Grade vs Target Aman</span>
         </div>
         <div className="grid grid-cols-3 gap-2 text-center">
           <div className="p-2 rounded-lg bg-rose-50 dark:bg-rose-950/40 border border-rose-200/60 dark:border-rose-800/50">
             <div className="text-[10px] font-bold text-rose-600 dark:text-rose-400">TWK</div>
             <div className="text-sm font-extrabold text-slate-900 dark:text-white">65</div>
-            <div className="text-[10px] text-slate-400">30 Soal</div>
+            <div className="text-[10px] text-emerald-600 font-bold">Target 105</div>
           </div>
           <div className="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200/60 dark:border-indigo-800/50">
             <div className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400">TIU</div>
             <div className="text-sm font-extrabold text-slate-900 dark:text-white">80</div>
-            <div className="text-[10px] text-slate-400">35 Soal</div>
+            <div className="text-[10px] text-emerald-600 font-bold">Target 140</div>
           </div>
           <div className="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/50">
             <div className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">TKP</div>
             <div className="text-sm font-extrabold text-slate-900 dark:text-white">166</div>
-            <div className="text-[10px] text-slate-400">45 Soal</div>
+            <div className="text-[10px] text-emerald-600 font-bold">Target 195</div>
           </div>
         </div>
       </div>
     </aside>
   );
 }
-

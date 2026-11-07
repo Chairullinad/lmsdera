@@ -9,7 +9,8 @@ import {
   ArrowRight,
   Zap,
   Award,
-  Youtube
+  Briefcase,
+  Calendar
 } from 'lucide-react';
 import { allModules, CATEGORY_META } from '../data/modulesIndex.js';
 
@@ -19,14 +20,15 @@ export default function Dashboard({
   onOpenModule,
   onNavigateCategory,
   onOpenSimulasi,
-  onOpenCheatSheet
+  onOpenCheatSheet,
+  onOpenFormasi,
+  onOpenJadwal
 }) {
   const categories = [
     {
       code: 'TWK',
       icon: Shield,
       gradient: 'from-rose-500 to-red-600',
-      lightBg: 'bg-rose-50 dark:bg-rose-950/30',
       border: 'border-rose-200 dark:border-rose-800/60',
       textColor: 'text-rose-600 dark:text-rose-400'
     },
@@ -34,7 +36,6 @@ export default function Dashboard({
       code: 'TIU',
       icon: Brain,
       gradient: 'from-indigo-500 to-blue-600',
-      lightBg: 'bg-indigo-50 dark:bg-indigo-950/30',
       border: 'border-indigo-200 dark:border-indigo-800/60',
       textColor: 'text-indigo-600 dark:text-indigo-400'
     },
@@ -42,7 +43,6 @@ export default function Dashboard({
       code: 'TKP',
       icon: HeartHandshake,
       gradient: 'from-emerald-500 to-teal-600',
-      lightBg: 'bg-emerald-50 dark:bg-emerald-950/30',
       border: 'border-emerald-200 dark:border-emerald-800/60',
       textColor: 'text-emerald-600 dark:text-emerald-400'
     }
@@ -60,13 +60,13 @@ export default function Dashboard({
           <div className="max-w-2xl space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm text-xs font-bold uppercase tracking-wider">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>Workspace Belajar CPNS Dera</span>
+              <span>Workspace Belajar CPNS Dera • S1 Informatika</span>
             </div>
             <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
               Siap Taklukkan SKD CPNS (TWK • TIU • TKP)!
             </h2>
             <p className="text-indigo-100 text-sm md:text-base leading-relaxed">
-              Seluruh materi dari video YouTube pilihan Anda dirangkum secara mendalam menjadi konsep inti, rumus cepat &lt; 45 detik, bedah contoh soal, serta kuis interaktif berstandar BKN.
+              Dilengkapi Radar Pilihan Lamaran <strong>S1 Informatika</strong>, Jadwal Belajar Strategis <strong>November – Januari</strong>, serta ekstraksi materi YouTube rinci berstandar BKN.
             </p>
           </div>
 
@@ -85,6 +85,47 @@ export default function Dashboard({
               />
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Highlight Baru: Pilihan Lamaran S1 Informatika & Jadwal Nov-Jan */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div
+          onClick={onOpenFormasi}
+          className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/30 dark:to-blue-950/20 border border-cyan-200 dark:border-cyan-800/50 flex items-center justify-between hover:shadow-md transition"
+        >
+          <div className="space-y-1 pr-4">
+            <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase text-cyan-700 dark:text-cyan-400">
+              <Briefcase className="w-4 h-4" />
+              <span>Kualifikasi: S1 Informatika</span>
+            </div>
+            <h4 className="text-base font-extrabold text-slate-900 dark:text-white">
+              🎯 Radar Pilihan Lamaran &amp; Checklist SSCASN
+            </h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400">
+              Peta jabatan Pranata Komputer, Manggala Informatika, Auditor, tabel SK Instansi, &amp; checklist berkas November.
+            </p>
+          </div>
+          <ArrowRight className="w-5 h-5 text-cyan-600 shrink-0" />
+        </div>
+
+        <div
+          onClick={onOpenJadwal}
+          className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-rose-50 to-purple-50 dark:from-rose-950/30 dark:to-purple-950/20 border border-rose-200 dark:border-rose-800/50 flex items-center justify-between hover:shadow-md transition"
+        >
+          <div className="space-y-1 pr-4">
+            <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase text-rose-700 dark:text-rose-400">
+              <Calendar className="w-4 h-4" />
+              <span>Pendaftaran Nov → Tes Jan</span>
+            </div>
+            <h4 className="text-base font-extrabold text-slate-900 dark:text-white">
+              📅 Jadwal &amp; Target Belajar (Roadmap Nov – Jan)
+            </h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400">
+              Jadwal rutin harian Senin–Minggu, checklist target 10 minggu, &amp; strategi tembus skor aman 440+.
+            </p>
+          </div>
+          <ArrowRight className="w-5 h-5 text-rose-600 shrink-0" />
         </div>
       </div>
 
@@ -139,7 +180,10 @@ export default function Dashboard({
 
                 <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
                   <span className="font-semibold text-slate-600 dark:text-slate-400">
-                    Selesai: <strong className="text-slate-900 dark:text-white">{doneCount}/{catModules.length}</strong>
+                    Selesai:{' '}
+                    <strong className="text-slate-900 dark:text-white">
+                      {doneCount}/{catModules.length}
+                    </strong>
                   </span>
                   <span className="inline-flex items-center gap-1 font-bold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform">
                     Buka Section <ArrowRight className="w-3.5 h-3.5" />
@@ -160,10 +204,10 @@ export default function Dashboard({
           <div className="space-y-1 pr-4">
             <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase text-amber-700 dark:text-amber-400">
               <Zap className="w-4 h-4" />
-              <span>Rangkuman Kilat & Rumus Cepat</span>
+              <span>Rangkuman Kilat &amp; Rumus Cepat</span>
             </div>
             <h4 className="text-base font-extrabold text-slate-900 dark:text-white">
-              Buka Cheat Sheet (Jembatan Keledai & Kata Kunci BKN)
+              Buka Cheat Sheet (Jembatan Keledai &amp; Kata Kunci BKN)
             </h4>
             <p className="text-xs text-slate-600 dark:text-slate-400">
               Kumpulan seluruh rumus &lt; 45 detik dan kata kunci poin 5 dari semua modul.
@@ -197,7 +241,7 @@ export default function Dashboard({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
           <div>
             <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">
-              Daftar Modul Pembelajaran Tersedia
+              Daftar Modul Pembelajaran Tersedia ({allModules.length} Modul)
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
               Kirimkan link YouTube baru di chat kapan saja untuk menambahkan modul baru secara rinci ke daftar ini!
@@ -267,4 +311,3 @@ export default function Dashboard({
     </div>
   );
 }
-

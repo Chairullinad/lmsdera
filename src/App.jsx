@@ -4,8 +4,9 @@ import Dashboard from './components/Dashboard.jsx';
 import ModuleViewer from './components/ModuleViewer.jsx';
 import CheatSheet from './components/CheatSheet.jsx';
 import QuizEngine from './components/QuizEngine.jsx';
+import FormasiPlanner from './components/FormasiPlanner.jsx';
+import StudyPlanner from './components/StudyPlanner.jsx';
 import {
-  allModules,
   getModulesByCategory,
   CATEGORY_META
 } from './data/modulesIndex.js';
@@ -19,7 +20,7 @@ import {
 } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('DASHBOARD'); // DASHBOARD | TWK | TIU | TKP | CHEATSHEET | SIMULASI
+  const [activeTab, setActiveTab] = useState('DASHBOARD'); // DASHBOARD | FORMASI | JADWAL | TWK | TIU | TKP | CHEATSHEET | SIMULASI
   const [selectedModule, setSelectedModule] = useState(null);
   const [selectedSubCat, setSelectedSubCat] = useState('Semua Sub-Topik');
   const [searchQuery, setSearchQuery] = useState('');
@@ -314,7 +315,13 @@ export default function App() {
             onNavigateCategory={handleSelectCategory}
             onOpenSimulasi={() => setActiveTab('SIMULASI')}
             onOpenCheatSheet={() => setActiveTab('CHEATSHEET')}
+            onOpenFormasi={() => setActiveTab('FORMASI')}
+            onOpenJadwal={() => setActiveTab('JADWAL')}
           />
+        ) : activeTab === 'FORMASI' ? (
+          <FormasiPlanner />
+        ) : activeTab === 'JADWAL' ? (
+          <StudyPlanner />
         ) : activeTab === 'CHEATSHEET' ? (
           <CheatSheet onOpenModule={handleOpenModule} />
         ) : activeTab === 'SIMULASI' ? (
@@ -326,4 +333,3 @@ export default function App() {
     </div>
   );
 }
-
