@@ -246,6 +246,9 @@ export default function App() {
                     </p>
 
                     <div className="flex flex-wrap gap-2 pt-1">
+                      <span className="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300">
+                        🎥 {mod.playlistVideos?.length || (mod.youtubeId ? 1 : 0)} Video Materi
+                      </span>
                       <span className="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
                         📖 {mod.theorySections?.length || 0} Bab Materi Rinci
                       </span>

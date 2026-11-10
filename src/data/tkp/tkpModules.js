@@ -1,3 +1,5 @@
+import { sangTutorTkpModules } from './sangTutorTkp.js';
+
 // ============================================================================
 // MODUL BELAJAR TKP (TES KARAKTERISTIK PRIBADI)
 // Setiap kali ada link YouTube baru untuk TKP, tambahkan modul rinci di sini.
@@ -116,6 +118,7 @@ export const tkpModules = [
         explanation: "Skor Poin: B (5), D (4), C (3), A (2), E (1). Dalam Pelayanan Publik, menghadapi warga yang marah harus dilakukan dengan kepala dingin (sopan/menenangkan), namun tetap tegas menjaga keadilan antrean sesuai SOP."
       }
     ]
-  }
+  },
+  ...sangTutorTkpModules
 ];
 

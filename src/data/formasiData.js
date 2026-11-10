@@ -186,3 +186,4 @@ export const SSCASN_DOC_CHECKLIST = [
     detail: "Jika melamar Kementerian Pusat yang mewajibkan TOEFL, pastikan masa berlaku sertifikat masih aktif saat bulan November."
   }
 ];
+

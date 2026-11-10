@@ -1,6 +1,8 @@
+import { sangTutorTwkModules } from './sangTutorTwk.js';
+
 // ============================================================================
 // MODUL BELAJAR TWK (TES WAWASAN KEBANGSAAN)
-// Disusun secara rinci dari Seri Video Pembelajaran TWK (Dhedi R Ghazali / Tanya CPNS)
+// Disusun secara rinci dari Seri Video Pembelajaran TWK (Dhedi R Ghazali & Sang Tutor)
 // ============================================================================
 
 export const twkSubCategories = [
@@ -1038,5 +1040,6 @@ export const twkModules = [
         explanation: "Menimbun barang kebutuhan pokok untuk pemerasan dan merugikan kepentingan umum secara langsung melanggar butir ke-6 dan ke-8 Sila Kelima Pancasila serta Pasal 33 UUD 1945."
       }
     ]
-  }
+  },
+  ...sangTutorTwkModules
 ];

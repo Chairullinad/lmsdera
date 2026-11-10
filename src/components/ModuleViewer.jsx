@@ -223,9 +223,9 @@ export default function ModuleViewer({
                   Bagian 1: Video Pembelajaran & Timestamp Bab Penting
                 </h2>
               </div>
-              {module.youtubeUrl && (
+              {(activeYoutubeId || module.youtubeUrl) && (
                 <a
-                  href={module.youtubeUrl}
+                  href={activeYoutubeId ? `https://www.youtube.com/watch?v=${activeYoutubeId}` : module.youtubeUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
@@ -234,6 +234,38 @@ export default function ModuleViewer({
                 </a>
               )}
             </div>
+
+            {/* Daftar Putar Multi-Video (Jika modul memiliki beberapa Part Video dari Playlist) */}
+            {module.playlistVideos && module.playlistVideos.length > 0 && (
+              <div className="p-3.5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-200/80 dark:border-indigo-800/60 space-y-2.5">
+                <div className="text-xs font-extrabold uppercase tracking-wider text-indigo-700 dark:text-indigo-300 flex items-center justify-between">
+                  <span>Daftar Video Terkait pada Modul Ini ({module.playlistVideos.length} Video)</span>
+                  <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Klik untuk memutar</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {module.playlistVideos.map((pv, idx) => {
+                    const isPlaying = activeYoutubeId === pv.id;
+                    return (
+                      <button
+                        key={pv.id || idx}
+                        onClick={() => {
+                          setCustomVideoUrl(pv.id);
+                          setStartSeconds(0);
+                        }}
+                        className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition text-left ${
+                          isPlaying
+                            ? 'bg-indigo-600 text-white shadow-sm'
+                            : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 hover:border-indigo-400'
+                        }`}
+                      >
+                        <Play className={`w-3.5 h-3.5 shrink-0 ${isPlaying ? 'text-amber-300' : 'text-rose-500'}`} />
+                        <span>{pv.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Input / Ganti Link YouTube Cepat */}
             <div className="flex flex-col sm:flex-row gap-2">

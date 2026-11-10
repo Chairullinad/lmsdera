@@ -1,3 +1,5 @@
+import { sangTutorTiuModules } from './sangTutorTiu.js';
+
 // ============================================================================
 // MODUL BELAJAR TIU (TES INTELIGENSIA UMUM)
 // Setiap kali ada link YouTube baru untuk TIU, tambahkan modul rinci di sini.
@@ -7,6 +9,8 @@ export const tiuSubCategories = [
   "Semua Sub-Topik",
   "Numerik - Deret Angka",
   "Numerik - Berhitung Cepat & Pecahan",
+  "Numerik - Perbandingan Kuantitatif & Kecukupan Data",
+  "Numerik - Analisa Data Tabel & Grafik",
   "Numerik - Perbandingan (Senilai, Berbalik, Gabungan)",
   "Numerik - Soal Cerita (Kecepatan, Jarak, Kerja Bersama)",
   "Verbal - Analogi",
@@ -130,6 +134,7 @@ export const tiuModules = [
         explanation: "Pola 2 Larik (Lompat 1):\n- Larik ganjil: 12 -> 15 (+3) -> 19 (+4) -> 24 (+5) -> berikutnya (+6) = 30.\n- Larik genap: 60 -> 52 (-8) -> 44 (-8) -> 36 (-8) -> berikutnya (-8) = 28.\nJadi jawabannya 30, 28."
       }
     ]
-  }
+  },
+  ...sangTutorTiuModules
 ];
 
