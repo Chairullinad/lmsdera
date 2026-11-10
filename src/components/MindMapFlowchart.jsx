@@ -12,12 +12,15 @@ import {
   CheckCircle2,
   Shield,
   Brain,
-  HeartHandshake
+  HeartHandshake,
+  Table2
 } from 'lucide-react';
 import { FLOWCHART_MASTER_DATA } from '../data/mindMapFlowchartData.js';
+import { SUMMARY_TABLES_DATA } from '../data/summaryTablesData.js';
 
 export default function MindMapFlowchart() {
   const [activeCat, setActiveCat] = useState('TWK'); // TWK | TIU | TKP
+  const [viewMode, setViewMode] = useState('FLOWCHART'); // FLOWCHART | TABEL
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedSubNodes, setExpandedSubNodes] = useState(() => {
     // Default: buka semua sub-node pertama pada tiap cabang atau biarkan terbuka agar langsung terbaca lengkap
@@ -73,6 +76,22 @@ export default function MindMapFlowchart() {
       if (matchingSubNodes.length > 0) {
         return { ...branch, subNodes: matchingSubNodes };
       }
+      return null;
+    })
+    .filter(Boolean);
+
+  const currentTables = SUMMARY_TABLES_DATA[activeCat] || [];
+
+  const filteredTables = currentTables
+    .map((tbl) => {
+      if (!q) return tbl;
+      const tblMatch =
+        tbl.title.toLowerCase().includes(q) || tbl.subtitle.toLowerCase().includes(q);
+      const matchingRows = tbl.rows.filter((row) =>
+        row.some((cell) => cell.toLowerCase().includes(q))
+      );
+      if (tblMatch) return tbl;
+      if (matchingRows.length > 0) return { ...tbl, rows: matchingRows };
       return null;
     })
     .filter(Boolean);
@@ -158,19 +177,47 @@ export default function MindMapFlowchart() {
             })}
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setAllForActiveCat(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-bold hover:bg-emerald-100 transition"
-            >
-              <Maximize2 className="w-3.5 h-3.5" /> Buka Semua Detail
-            </button>
-            <button
-              onClick={() => setAllForActiveCat(false)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-xs font-bold hover:bg-slate-200 transition"
-            >
-              <Minimize2 className="w-3.5 h-3.5" /> Ringkas Flowchart
-            </button>
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Pengalih Mode: Pohon Flowchart vs Tabel Rangkuman */}
+            <div className="inline-flex p-1 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <button
+                onClick={() => setViewMode('FLOWCHART')}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-extrabold transition ${
+                  viewMode === 'FLOWCHART'
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900'
+                }`}
+              >
+                <GitBranch className="w-3.5 h-3.5" /> Pohon Flowchart
+              </button>
+              <button
+                onClick={() => setViewMode('TABEL')}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-extrabold transition ${
+                  viewMode === 'TABEL'
+                    ? 'bg-amber-500 text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900'
+                }`}
+              >
+                <Table2 className="w-3.5 h-3.5" /> Tabel Rangkuman ({currentTables.length})
+              </button>
+            </div>
+
+            {viewMode === 'FLOWCHART' && (
+              <>
+                <button
+                  onClick={() => setAllForActiveCat(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-bold hover:bg-emerald-100 transition"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" /> Buka Semua Detail
+                </button>
+                <button
+                  onClick={() => setAllForActiveCat(false)}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-xs font-bold hover:bg-slate-200 transition"
+                >
+                  <Minimize2 className="w-3.5 h-3.5" /> Ringkas Flowchart
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -187,36 +234,41 @@ export default function MindMapFlowchart() {
         </div>
       </div>
 
-      {/* ROOT DECISION FLOW (Alur Start Soal) */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
-        <div className="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3 text-center">
-          Alur Start Berpikir Saat Mengerjakan Soal {activeCat}
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
-          <div className={`p-3.5 rounded-xl border ${catTheme.accentBorder} ${catTheme.accentBg} text-xs font-extrabold text-slate-800 dark:text-slate-100 text-center`}>
-            {currentData.rootFlow.step1}
+      {/* =====================================================================
+          MODE 1: POHON FLOWCHART INTERAKTIF (ALUR BERPIKIR & POIN KECIL)
+         ===================================================================== */}
+      {viewMode === 'FLOWCHART' && (
+        <>
+          {/* ROOT DECISION FLOW (Alur Start Soal) */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+            <div className="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3 text-center">
+              Alur Start Berpikir Saat Mengerjakan Soal {activeCat}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
+              <div className={`p-3.5 rounded-xl border ${catTheme.accentBorder} ${catTheme.accentBg} text-xs font-extrabold text-slate-800 dark:text-slate-100 text-center`}>
+                {currentData.rootFlow.step1}
+              </div>
+              <div className={`p-3.5 rounded-xl border ${catTheme.accentBorder} ${catTheme.accentBg} text-xs font-extrabold text-slate-800 dark:text-slate-100 text-center`}>
+                {currentData.rootFlow.step2}
+              </div>
+              <div className={`p-3.5 rounded-xl border ${catTheme.accentBorder} ${catTheme.accentBg} text-xs font-extrabold text-slate-800 dark:text-slate-100 text-center`}>
+                {currentData.rootFlow.step3}
+              </div>
+            </div>
+            <div className="flex justify-center mt-3">
+              <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold ${catTheme.accentBg} ${catTheme.accentText}`}>
+                <ArrowDown className="w-4 h-4" /> Pilih Cabang Flowchart di Bawah Sesuai Fokus Soal
+              </div>
+            </div>
           </div>
-          <div className={`p-3.5 rounded-xl border ${catTheme.accentBorder} ${catTheme.accentBg} text-xs font-extrabold text-slate-800 dark:text-slate-100 text-center`}>
-            {currentData.rootFlow.step2}
-          </div>
-          <div className={`p-3.5 rounded-xl border ${catTheme.accentBorder} ${catTheme.accentBg} text-xs font-extrabold text-slate-800 dark:text-slate-100 text-center`}>
-            {currentData.rootFlow.step3}
-          </div>
-        </div>
-        <div className="flex justify-center mt-3">
-          <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold ${catTheme.accentBg} ${catTheme.accentText}`}>
-            <ArrowDown className="w-4 h-4" /> Pilih Cabang Flowchart di Bawah Sesuai Fokus Soal
-          </div>
-        </div>
-      </div>
 
-      {/* FLOWCHART BRANCHES (Level 1 -> Level 2 -> Level 3 Small Points) */}
-      {filteredBranches.length === 0 ? (
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-10 text-center border border-slate-200 dark:border-slate-800 text-sm text-slate-500">
-          Tidak ditemukan kata kunci <strong>&ldquo;{searchQuery}&rdquo;</strong> pada {activeCat}. Coba kata kunci lain atau pindah tab kategori.
-        </div>
-      ) : (
-        <div className="space-y-6">
+          {/* FLOWCHART BRANCHES (Level 1 -> Level 2 -> Level 3 Small Points) */}
+          {filteredBranches.length === 0 ? (
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-10 text-center border border-slate-200 dark:border-slate-800 text-sm text-slate-500">
+              Tidak ditemukan kata kunci <strong>&ldquo;{searchQuery}&rdquo;</strong> pada Flowchart {activeCat}. Coba kata kunci lain atau cek Mode Tabel Rangkuman.
+            </div>
+          ) : (
+            <div className="space-y-6">
           {filteredBranches.map((branch) => (
             <div key={branch.id} className="relative">
               {/* Connector Trigger Label */}
@@ -329,8 +381,75 @@ export default function MindMapFlowchart() {
               </div>
             </div>
           ))}
+            </div>
+          )}
+        </>
+      )}
+
+      {/* =====================================================================
+          MODE 2: TABEL RANGKUMAN MASTER LENGKAP (PERBANDINGAN & HAFALAN)
+         ===================================================================== */}
+      {viewMode === 'TABEL' && (
+        <div className="space-y-6">
+          {filteredTables.length === 0 ? (
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-10 text-center border border-slate-200 dark:border-slate-800 text-sm text-slate-500">
+              Tidak ditemukan baris tabel yang memuat kata kunci <strong>&ldquo;{searchQuery}&rdquo;</strong> pada {activeCat}.
+            </div>
+          ) : (
+            filteredTables.map((tbl) => (
+              <div
+                key={tbl.id}
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden"
+              >
+                <div className={`p-5 ${catTheme.accentBg} border-b ${catTheme.accentBorder}`}>
+                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">
+                    {tbl.title}
+                  </h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                    {tbl.subtitle}
+                  </p>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                    <thead>
+                      <tr className="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700">
+                        {tbl.headers.map((h, hIdx) => (
+                          <th key={hIdx} className="p-3.5 font-extrabold whitespace-nowrap sm:whitespace-normal">
+                            {h}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+                      {tbl.rows.map((row, rIdx) => (
+                        <tr
+                          key={rIdx}
+                          className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition align-top"
+                        >
+                          {row.map((cell, cIdx) => (
+                            <td
+                              key={cIdx}
+                              className={`p-3.5 whitespace-pre-line leading-relaxed ${
+                                cIdx === 0
+                                  ? 'font-extrabold text-slate-900 dark:text-white min-w-[160px]'
+                                  : 'text-slate-700 dark:text-slate-300 min-w-[190px]'
+                              }`}
+                            >
+                              {cell}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       )}
     </div>
   );
 }
+
