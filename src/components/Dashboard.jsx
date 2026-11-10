@@ -10,7 +10,8 @@ import {
   Zap,
   Award,
   Briefcase,
-  Calendar
+  Calendar,
+  GitBranch
 } from 'lucide-react';
 import { allModules, CATEGORY_META } from '../data/modulesIndex.js';
 
@@ -21,6 +22,7 @@ export default function Dashboard({
   onNavigateCategory,
   onOpenSimulasi,
   onOpenCheatSheet,
+  onOpenFlowchart,
   onOpenFormasi,
   onOpenJadwal
 }) {
@@ -195,8 +197,27 @@ export default function Dashboard({
         </div>
       </div>
 
-      {/* Quick Access Tools: Cheat Sheet & Mini CAT */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      {/* Quick Access Tools: Flowchart Lengkap, Cheat Sheet & Mini CAT */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div
+          onClick={onOpenFlowchart}
+          className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-teal-950/30 dark:to-emerald-950/20 border border-teal-200 dark:border-teal-800/50 flex items-center justify-between hover:shadow-md transition"
+        >
+          <div className="space-y-1 pr-3">
+            <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase text-teal-700 dark:text-teal-400">
+              <GitBranch className="w-4 h-4" />
+              <span>Peta Konsep &amp; Detail Kecil</span>
+            </div>
+            <h4 className="text-base font-extrabold text-slate-900 dark:text-white">
+              🗺️ Flowchart &amp; Rangkuman Lengkap
+            </h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400">
+              Alur berpikir lengkap dari poin besar sampai seluruh poin kecil TWK, TIU, TKP.
+            </p>
+          </div>
+          <ArrowRight className="w-5 h-5 text-teal-600 shrink-0" />
+        </div>
+
         <div
           onClick={onOpenCheatSheet}
           className="cursor-pointer rounded-2xl p-5 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/20 border border-amber-200 dark:border-amber-800/50 flex items-center justify-between hover:shadow-md transition"

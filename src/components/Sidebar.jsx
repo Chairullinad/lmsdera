@@ -11,7 +11,8 @@ import {
   BookOpen,
   CheckCircle2,
   Briefcase,
-  Calendar
+  Calendar,
+  GitBranch
 } from 'lucide-react';
 import { allModules } from '../data/modulesIndex.js';
 
@@ -69,6 +70,13 @@ export default function Sidebar({
       icon: HeartHandshake,
       badge: `${doneByCat('TKP')}/${countByCat('TKP')}`,
       color: 'text-emerald-600 dark:text-emerald-400'
+    },
+    {
+      id: 'FLOWCHART',
+      label: 'Flowchart & Rangkuman Lengkap',
+      icon: GitBranch,
+      badge: 'Detail',
+      color: 'text-teal-600 dark:text-teal-400'
     },
     {
       id: 'CHEATSHEET',

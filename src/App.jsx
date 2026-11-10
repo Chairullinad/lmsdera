@@ -6,6 +6,7 @@ import CheatSheet from './components/CheatSheet.jsx';
 import QuizEngine from './components/QuizEngine.jsx';
 import FormasiPlanner from './components/FormasiPlanner.jsx';
 import StudyPlanner from './components/StudyPlanner.jsx';
+import MindMapFlowchart from './components/MindMapFlowchart.jsx';
 import {
   getModulesByCategory,
   CATEGORY_META
@@ -318,6 +319,7 @@ export default function App() {
             onNavigateCategory={handleSelectCategory}
             onOpenSimulasi={() => setActiveTab('SIMULASI')}
             onOpenCheatSheet={() => setActiveTab('CHEATSHEET')}
+            onOpenFlowchart={() => setActiveTab('FLOWCHART')}
             onOpenFormasi={() => setActiveTab('FORMASI')}
             onOpenJadwal={() => setActiveTab('JADWAL')}
           />
@@ -325,6 +327,8 @@ export default function App() {
           <FormasiPlanner />
         ) : activeTab === 'JADWAL' ? (
           <StudyPlanner />
+        ) : activeTab === 'FLOWCHART' ? (
+          <MindMapFlowchart />
         ) : activeTab === 'CHEATSHEET' ? (
           <CheatSheet onOpenModule={handleOpenModule} />
         ) : activeTab === 'SIMULASI' ? (
